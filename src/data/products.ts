@@ -1,15 +1,44 @@
+/**
+ * Product catalog data and type definitions.
+ * 
+ * This module contains the core product data model and the complete product catalog.
+ * In a production application, this would likely be replaced with API calls to a
+ * backend service or headless CMS.
+ */
+
+/**
+ * Core product data model representing items in the catalog.
+ * 
+ * All monetary values are in USD. The badge field is optional and used for
+ * highlighting special products (e.g., "Best Seller", "Top Rated").
+ */
 export interface Product {
+  /** Unique identifier for the product */
   id: number;
+  /** Product display name (also used to generate URL slugs) */
   name: string;
+  /** Detailed product description for detail pages */
   description: string;
+  /** Price in USD */
   price: number;
+  /** Product category for filtering and organization */
   category: string;
+  /** Average customer rating (1.0 to 5.0) */
   rating: number;
+  /** Total number of customer reviews */
   reviews: number;
+  /** URL to product image (Unsplash URLs with dimensions) */
   image: string;
+  /** Optional promotional badge text (e.g., "Best Seller") */
   badge?: string;
 }
 
+/**
+ * Available product categories for filtering.
+ * 
+ * The "All" category is a special value used to show all products without filtering.
+ * Using `as const` enables type inference for category literals throughout the app.
+ */
 export const categories = [
   "All",
   "Electronics",
@@ -21,6 +50,13 @@ export const categories = [
   "Beauty",
 ] as const;
 
+/**
+ * Complete product catalog with 12 sample products across 7 categories.
+ * 
+ * Product images are sourced from Unsplash with consistent 500x500 dimensions.
+ * This mock data demonstrates the catalog functionality without requiring
+ * a backend database.
+ */
 export const products: Product[] = [
   {
     id: 1,

@@ -20,7 +20,16 @@ import {
   User,
 } from "lucide-react";
 
-// Mock reviews data
+// ============================================================================
+// Mock Data
+// ============================================================================
+
+/**
+ * Mock customer reviews data.
+ * 
+ * In a production app, this would be fetched from an API based on the product ID.
+ * Currently static for demonstration purposes.
+ */
 const mockReviews = [
   {
     id: 1,
@@ -48,6 +57,16 @@ const mockReviews = [
   },
 ];
 
+// ============================================================================
+// Sub-components
+// ============================================================================
+
+/**
+ * StarRating - Visual 5-star rating display component.
+ * 
+ * Renders filled or empty stars based on the rating prop.
+ * Used for displaying both product ratings and individual review ratings.
+ */
 function StarRating({ rating }: { rating: number }) {
   return (
     <div className="flex items-center gap-0.5">
@@ -65,6 +84,12 @@ function StarRating({ rating }: { rating: number }) {
   );
 }
 
+/**
+ * ReviewCard - Individual customer review display component.
+ * 
+ * Shows reviewer avatar (placeholder), name, date, rating, and review text
+ * in a Card layout.
+ */
 function ReviewCard({
   review,
 }: {
@@ -75,6 +100,7 @@ function ReviewCard({
       <CardHeader className="pb-3">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
+            {/* Avatar placeholder with user icon */}
             <div className="flex h-10 w-10 items-center justify-center rounded-full bg-primary/10">
               <User className="h-5 w-5 text-primary" />
             </div>
@@ -93,15 +119,39 @@ function ReviewCard({
   );
 }
 
+// ============================================================================
+// Main Component
+// ============================================================================
+
+/**
+ * ProductDetailPage - Individual product view with full details.
+ * 
+ * Features:
+ * - Resolves product from URL slug parameter
+ * - Product image with optional badge overlay
+ * - Full product details (price, description, rating)
+ * - Add to cart functionality
+ * - Customer reviews section with rating distribution
+ * - Breadcrumb navigation
+ * - Product-specific SEO with JSON-LD structured data
+ * - 404 handling for invalid slugs
+ */
 export function ProductDetailPage() {
+  // Extract slug from URL: /product/:slug
   const { slug } = useParams<{ slug: string }>();
   const addItem = useCartStore((state) => state.addItem);
 
+  // Resolve product from slug (returns undefined if not found)
   const product = slug ? findProductBySlug(products, slug) : undefined;
 
+  // ============================================================================
+  // Not Found State
+  // ============================================================================
+  
   if (!product) {
     return (
       <>
+        {/* SEO for 404 page */}
         <SEO
           title="Product Not Found"
           description="The product you're looking for doesn't exist or has been removed. Browse our catalog for similar items."
@@ -125,6 +175,11 @@ export function ProductDetailPage() {
     );
   }
 
+  // ============================================================================
+  // Handlers
+  // ============================================================================
+  
+  /** Adds the current product to the shopping cart with quantity 1 */
   const handleAddToCart = () => {
     addItem({
       productId: product.id,
@@ -134,11 +189,23 @@ export function ProductDetailPage() {
     });
   };
 
+  // ============================================================================
+  // SEO Data Preparation
+  // ============================================================================
+  
+  // Build canonical URL for this product page
   const productUrl = `https://grikomsn.github.io/product-catalog-vite/product/${slug}`;
+  
+  // Generate product-specific keywords for better search indexing
   const productKeywords = `${product.name}, ${product.category}, buy ${product.name.toLowerCase()}, ${product.category.toLowerCase()} products, shophub, online shopping`;
 
+  // ============================================================================
+  // Render
+  // ============================================================================
+  
   return (
     <>
+      {/* Product-specific SEO with structured data */}
       <SEO
         title={product.name}
         description={product.description}
@@ -149,7 +216,7 @@ export function ProductDetailPage() {
         product={product}
       />
       <div className="space-y-8">
-      {/* Breadcrumb */}
+      {/* Breadcrumb Navigation */}
       <nav className="flex items-center gap-2 text-sm text-muted-foreground">
         <Link to="/" className="hover:text-foreground transition-colors">
           Products
@@ -158,9 +225,9 @@ export function ProductDetailPage() {
         <span className="text-foreground">{product.name}</span>
       </nav>
 
-      {/* Product Details */}
+      {/* Product Details Grid - 2 columns on large screens */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-        {/* Image */}
+        {/* Product Image with optional badge overlay */}
         <div className="relative aspect-square overflow-hidden rounded-lg bg-muted">
           <img
             src={product.image}
@@ -174,7 +241,7 @@ export function ProductDetailPage() {
           )}
         </div>
 
-        {/* Info */}
+        {/* Product Info Column */}
         <div className="flex flex-col">
           <div className="mb-4">
             <Badge variant="secondary" className="mb-3">
@@ -183,6 +250,7 @@ export function ProductDetailPage() {
             <h1 className="text-3xl font-bold tracking-tight mb-2">
               {product.name}
             </h1>
+            {/* Rating display with rounded value for stars */}
             <div className="flex items-center gap-2 mb-4">
               <StarRating rating={Math.round(product.rating)} />
               <span className="text-sm text-muted-foreground">
@@ -199,6 +267,7 @@ export function ProductDetailPage() {
             {product.description}
           </p>
 
+          {/* Shipping/Return Info List */}
           <div className="space-y-4 mb-8">
             <div className="flex items-center gap-3 text-sm">
               <div className="flex h-5 w-5 items-center justify-center rounded-full bg-green-500/10">
@@ -220,6 +289,7 @@ export function ProductDetailPage() {
             </div>
           </div>
 
+          {/* Action Buttons */}
           <div className="flex gap-4 mt-auto">
             <Button size="lg" className="flex-1 gap-2" onClick={handleAddToCart}>
               <ShoppingCart className="h-5 w-5" />
@@ -238,8 +308,9 @@ export function ProductDetailPage() {
           Customer Reviews ({product.reviews})
         </h2>
 
-        {/* Rating Summary */}
+        {/* Rating Summary Cards */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+          {/* Average Rating Card */}
           <Card>
             <CardContent className="pt-6">
               <div className="text-center">
@@ -252,13 +323,26 @@ export function ProductDetailPage() {
             </CardContent>
           </Card>
 
+          {/* Rating Distribution Bars Card */}
           <Card className="md:col-span-2">
             <CardContent className="pt-6">
               <div className="space-y-2">
+                {/* 
+                  Rating distribution visualization.
+                  Shows horizontal bars for each star level (5★ to 1★) with 
+                  hardcoded percentages representing typical review distributions.
+                  
+                  In a production app, these would be calculated from actual review data.
+                */}
                 {[5, 4, 3, 2, 1].map((stars) => (
                   <div key={stars} className="flex items-center gap-3">
                     <span className="text-sm w-8">{stars}★</span>
+                    {/* Progress bar background */}
                     <div className="flex-1 h-2 bg-muted rounded-full overflow-hidden">
+                      {/* 
+                        Filled portion representing percentage of reviews at this rating.
+                        Hardcoded distribution: 5★=65%, 4★=25%, 3★=7%, 2★=2%, 1★=1%
+                      */}
                       <div
                         className="h-full bg-yellow-400 rounded-full"
                         style={{
@@ -266,6 +350,7 @@ export function ProductDetailPage() {
                         }}
                       />
                     </div>
+                    {/* Percentage label */}
                     <span className="text-sm text-muted-foreground w-12 text-right">
                       {stars === 5
                         ? "65%"
@@ -284,7 +369,7 @@ export function ProductDetailPage() {
           </Card>
         </div>
 
-        {/* Individual Reviews */}
+        {/* Individual Review Cards Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {mockReviews.map((review) => (
             <ReviewCard key={review.id} review={review} />
@@ -292,7 +377,7 @@ export function ProductDetailPage() {
         </div>
       </div>
 
-      {/* Back to Products */}
+      {/* Back to Products Link */}
       <div className="border-t pt-8">
         <Link to="/">
           <Button variant="outline" className="gap-2">

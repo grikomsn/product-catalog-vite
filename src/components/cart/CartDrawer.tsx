@@ -14,7 +14,23 @@ import { ShoppingCart, Trash2, Plus, Minus, Package } from "lucide-react";
 import { Link } from "react-router-dom";
 import { generateSlug } from "@/lib/slug";
 
+/**
+ * CartDrawer - Slide-out shopping cart drawer component.
+ * 
+ * Features:
+ * - Trigger button with item count badge
+ * - List of cart items with thumbnails
+ * - Quantity adjustment controls (+/- buttons)
+ * - Individual item removal
+ * - Clear entire cart
+ * - Total price calculation
+ * - Empty state with CTA
+ * - Checkout button (demo)
+ * 
+ * Uses shadcn/ui Sheet component for the slide-out panel.
+ */
 export function CartDrawer() {
+  // Select individual store slices for better performance (prevents re-render on unrelated changes)
   const items = useCartStore((state) => state.items);
   const removeItem = useCartStore((state) => state.removeItem);
   const updateQuantity = useCartStore((state) => state.updateQuantity);
@@ -26,6 +42,7 @@ export function CartDrawer() {
 
   return (
     <Sheet>
+      {/* Trigger button with item count badge overlay */}
       <SheetTrigger
         render={
           <Button variant="outline" size="icon" className="relative shrink-0">
@@ -49,6 +66,7 @@ export function CartDrawer() {
           </SheetTitle>
         </SheetHeader>
 
+        {/* Empty cart state */}
         {isEmpty ? (
           <div className="flex flex-1 flex-col items-center justify-center gap-4 py-12">
             <div className="rounded-full bg-muted p-4">
@@ -70,6 +88,7 @@ export function CartDrawer() {
           </div>
         ) : (
           <>
+            {/* Cart items list - scrollable area */}
             <div className="flex-1 overflow-y-auto py-4">
               <div className="space-y-4">
                 {items.map((item) => (
@@ -77,7 +96,7 @@ export function CartDrawer() {
                     key={item.productId}
                     className="flex gap-4 rounded-lg border p-3"
                   >
-                    {/* Product Image */}
+                    {/* Clickable product thumbnail linking to detail page */}
                     <Link
                       to={`/product/${generateSlug(item.name)}`}
                       className="shrink-0"
@@ -89,9 +108,10 @@ export function CartDrawer() {
                       />
                     </Link>
 
-                    {/* Product Info */}
+                    {/* Product details and controls */}
                     <div className="flex flex-1 flex-col justify-between">
                       <div>
+                        {/* Product name links to detail page */}
                         <Link
                           to={`/product/${generateSlug(item.name)}`}
                           className="font-medium hover:underline line-clamp-1"
@@ -104,7 +124,7 @@ export function CartDrawer() {
                       </div>
 
                       <div className="flex items-center justify-between">
-                        {/* Quantity Controls */}
+                        {/* Quantity adjustment controls */}
                         <div className="flex items-center gap-2">
                           <Button
                             variant="outline"
@@ -131,7 +151,7 @@ export function CartDrawer() {
                           </Button>
                         </div>
 
-                        {/* Item Total & Remove */}
+                        {/* Item subtotal and remove button */}
                         <div className="flex items-center gap-3">
                           <span className="font-semibold">
                             ${(item.price * item.quantity).toFixed(2)}
@@ -152,7 +172,7 @@ export function CartDrawer() {
               </div>
             </div>
 
-            {/* Footer */}
+            {/* Cart footer with totals and actions */}
             <SheetFooter className="flex-col gap-4 border-t pt-4">
               <div className="flex w-full items-center justify-between text-lg">
                 <span className="font-medium">Total</span>

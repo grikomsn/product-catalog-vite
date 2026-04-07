@@ -9,12 +9,29 @@ import {
 import { CategoryFilter } from "./CategoryFilter";
 import { Filter } from "lucide-react";
 
+/**
+ * Props for the mobile filter sheet component.
+ */
 interface MobileFilterSheetProps {
+  /** Array of currently selected category names */
   selectedCategories: string[];
+  /** Callback when a category is toggled */
   onCategoryChange: (category: string) => void;
+  /** Number of products matching current filters */
   productCount: number;
 }
 
+/**
+ * MobileFilterSheet - Slide-out filter drawer for mobile devices.
+ * 
+ * Provides the same category filtering functionality as the desktop Sidebar
+ * but in a Sheet (slide-out drawer) format suitable for mobile screens.
+ * 
+ * Trigger button is hidden on desktop (lg:hidden) since the Sidebar handles
+ * filters on larger screens.
+ * 
+ * @see Sidebar for desktop filter UI
+ */
 export function MobileFilterSheet({
   selectedCategories,
   onCategoryChange,
@@ -22,6 +39,7 @@ export function MobileFilterSheet({
 }: MobileFilterSheetProps) {
   return (
     <Sheet>
+      {/* Trigger button - visible only on mobile */}
       <SheetTrigger
         render={
           <Button variant="outline" size="sm" className="lg:hidden gap-2">
@@ -30,6 +48,7 @@ export function MobileFilterSheet({
           </Button>
         }
       />
+      {/* Sheet slides in from left side on mobile */}
       <SheetContent side="left" className="w-80">
         <SheetHeader>
           <SheetTitle>Filters</SheetTitle>

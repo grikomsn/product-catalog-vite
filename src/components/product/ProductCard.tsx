@@ -14,14 +14,43 @@ import { Star } from "lucide-react";
 import { generateSlug } from "@/lib/slug";
 import { useCartStore } from "@/stores/cartStore";
 
+/**
+ * Props for the ProductCard component.
+ */
 interface ProductCardProps {
+  /** Product data to display */
   product: Product;
 }
 
+/**
+ * ProductCard - Individual product display card.
+ * 
+ * A clickable card that links to the product detail page. Features:
+ * - Product image with hover zoom effect
+ * - Optional promotional badge overlay
+ * - Product name, description, price, and rating
+ * - Category badge
+ * - "Add to Cart" button (prevents navigation when clicked)
+ * 
+ * The entire card is wrapped in a Link for navigation, but the Add to Cart
+ * button stops propagation to prevent triggering the link navigation.
+ * 
+ * @example
+ * <ProductCard product={product} />
+ */
 export function ProductCard({ product }: ProductCardProps) {
   const addItem = useCartStore((state) => state.addItem);
+  
+  // Generate URL-friendly slug from product name for linking
   const slug = generateSlug(product.name);
 
+  /**
+   * Handle add to cart button click.
+   * 
+   * Prevents the click from bubbling to the parent Link component,
+   * which would otherwise navigate to the product detail page.
+   * Stops both default link behavior and event propagation.
+   */
   const handleAddToCart = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
@@ -36,6 +65,7 @@ export function ProductCard({ product }: ProductCardProps) {
   return (
     <Link to={`/product/${slug}`} className="block">
       <Card className="group h-full transition-shadow hover:shadow-md cursor-pointer">
+        {/* Product image with optional badge */}
         <div className="relative aspect-square overflow-hidden">
           <img
             src={product.image}
@@ -50,15 +80,18 @@ export function ProductCard({ product }: ProductCardProps) {
         </div>
         <CardHeader className="space-y-1">
           <div className="flex items-start justify-between gap-2">
+            {/* Product name with line clamp for consistent height */}
             <CardTitle className="line-clamp-1 text-base">
               {product.name}
             </CardTitle>
           </div>
+          {/* Product description - 2 lines max */}
           <CardDescription className="line-clamp-2 text-xs">
             {product.description}
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-2">
+          {/* Rating display */}
           <div className="flex items-center gap-1">
             <Star className="h-3.5 w-3.5 fill-yellow-400 text-yellow-400" />
             <span className="text-sm font-medium">{product.rating}</span>
@@ -66,6 +99,7 @@ export function ProductCard({ product }: ProductCardProps) {
               ({product.reviews})
             </span>
           </div>
+          {/* Price and category */}
           <div className="flex items-center justify-between">
             <span className="text-lg font-semibold">
               ${product.price.toFixed(2)}
