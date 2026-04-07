@@ -4,6 +4,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Badge } from "@/components/ui/badge";
+import { ThemeProvider } from "@/components/theme-provider";
+import { ThemeToggle } from "@/components/theme-toggle";
 import {
   Card,
   CardHeader,
@@ -75,6 +77,9 @@ function Navbar({
             </Badge>
           )}
         </Button>
+
+        {/* Theme Toggle */}
+        <ThemeToggle />
       </div>
     </header>
   );
@@ -259,80 +264,82 @@ function App() {
   };
 
   return (
-    <div className="min-h-screen bg-background">
-      <Navbar
-        searchQuery={searchQuery}
-        setSearchQuery={setSearchQuery}
-        cartCount={cartCount}
-      />
+    <ThemeProvider defaultTheme="system">
+      <div className="min-h-screen bg-background">
+        <Navbar
+          searchQuery={searchQuery}
+          setSearchQuery={setSearchQuery}
+          cartCount={cartCount}
+        />
 
-      <main className="container mx-auto px-4 py-6">
-        <div className="flex gap-8">
-          {/* Desktop Sidebar */}
-          <Sidebar
-            selectedCategories={selectedCategories}
-            onCategoryChange={handleCategoryChange}
-            productCount={filteredProducts.length}
-          />
+        <main className="container mx-auto px-4 py-6">
+          <div className="flex gap-8">
+            {/* Desktop Sidebar */}
+            <Sidebar
+              selectedCategories={selectedCategories}
+              onCategoryChange={handleCategoryChange}
+              productCount={filteredProducts.length}
+            />
 
-          {/* Main Content */}
-          <div className="flex-1 min-w-0">
-            {/* Mobile Filter Bar */}
-            <div className="flex items-center justify-between gap-4 mb-6 lg:hidden">
-              <MobileFilterSheet
-                selectedCategories={selectedCategories}
-                onCategoryChange={handleCategoryChange}
-                productCount={filteredProducts.length}
-              />
-              <span className="text-sm text-muted-foreground">
-                {filteredProducts.length} products
-              </span>
-            </div>
-
-            {/* Results Header (Desktop) */}
-            <div className="hidden lg:flex items-center justify-between mb-6">
-              <h1 className="text-2xl font-bold tracking-tight">All Products</h1>
-              <span className="text-sm text-muted-foreground">
-                Showing {filteredProducts.length} of {products.length} products
-              </span>
-            </div>
-
-            {/* Product Grid */}
-            {filteredProducts.length > 0 ? (
-              <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-4 md:gap-6">
-                {filteredProducts.map((product) => (
-                  <ProductCard
-                    key={product.id}
-                    product={product}
-                    onAddToCart={handleAddToCart}
-                  />
-                ))}
+            {/* Main Content */}
+            <div className="flex-1 min-w-0">
+              {/* Mobile Filter Bar */}
+              <div className="flex items-center justify-between gap-4 mb-6 lg:hidden">
+                <MobileFilterSheet
+                  selectedCategories={selectedCategories}
+                  onCategoryChange={handleCategoryChange}
+                  productCount={filteredProducts.length}
+                />
+                <span className="text-sm text-muted-foreground">
+                  {filteredProducts.length} products
+                </span>
               </div>
-            ) : (
-              <div className="flex flex-col items-center justify-center py-16 text-center">
-                <div className="rounded-full bg-muted p-4 mb-4">
-                  <Search className="h-8 w-8 text-muted-foreground" />
+
+              {/* Results Header (Desktop) */}
+              <div className="hidden lg:flex items-center justify-between mb-6">
+                <h1 className="text-2xl font-bold tracking-tight">All Products</h1>
+                <span className="text-sm text-muted-foreground">
+                  Showing {filteredProducts.length} of {products.length} products
+                </span>
+              </div>
+
+              {/* Product Grid */}
+              {filteredProducts.length > 0 ? (
+                <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-4 md:gap-6">
+                  {filteredProducts.map((product) => (
+                    <ProductCard
+                      key={product.id}
+                      product={product}
+                      onAddToCart={handleAddToCart}
+                    />
+                  ))}
                 </div>
-                <h3 className="text-lg font-semibold mb-1">No products found</h3>
-                <p className="text-sm text-muted-foreground max-w-sm">
-                  Try adjusting your search or filters to find what you're looking for.
-                </p>
-                <Button
-                  variant="outline"
-                  className="mt-4"
-                  onClick={() => {
-                    setSearchQuery("");
-                    setSelectedCategories(["All"]);
-                  }}
-                >
-                  Clear all filters
-                </Button>
-              </div>
-            )}
+              ) : (
+                <div className="flex flex-col items-center justify-center py-16 text-center">
+                  <div className="rounded-full bg-muted p-4 mb-4">
+                    <Search className="h-8 w-8 text-muted-foreground" />
+                  </div>
+                  <h3 className="text-lg font-semibold mb-1">No products found</h3>
+                  <p className="text-sm text-muted-foreground max-w-sm">
+                    Try adjusting your search or filters to find what you're looking for.
+                  </p>
+                  <Button
+                    variant="outline"
+                    className="mt-4"
+                    onClick={() => {
+                      setSearchQuery("");
+                      setSelectedCategories(["All"]);
+                    }}
+                  >
+                    Clear all filters
+                  </Button>
+                </div>
+              )}
+            </div>
           </div>
-        </div>
-      </main>
-    </div>
+        </main>
+      </div>
+    </ThemeProvider>
   );
 }
 
