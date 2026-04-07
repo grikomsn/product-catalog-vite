@@ -1,74 +1,74 @@
-# React + TypeScript + Vite
+# Product Catalog
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A responsive product catalog built with React, TypeScript, and Vite.
 
-Currently, two official plugins are available:
+![Product Catalog](https://grikomsn.github.io/product-catalog-vite/)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## Features
 
-## React Compiler
+- **Responsive Design**: Works on desktop, tablet, and mobile
+- **Search**: Real-time product filtering by name and description
+- **Category Filters**: Filter by product categories (Electronics, Clothing, etc.)
+- **Mobile Filters**: Slide-in filter sheet for mobile devices
+- **Shopping Cart**: Add items to cart with counter badge
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Tech Stack
 
-## Expanding the ESLint configuration
+- React 19 + TypeScript
+- Vite (build tool)
+- Tailwind CSS v4
+- shadcn/ui components
+- Bun (package manager)
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## Quick Start
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+```bash
+# Install dependencies
+bun install
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+# Start dev server
+bun run dev
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+# Build for production
+bun run build
+
+# Preview production build
+bun run preview
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## Deployment
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+This project auto-deploys to GitHub Pages on every push to `main`. The workflow is defined in `.github/workflows/deploy.yml`.
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+**Live site**: https://grikomsn.github.io/product-catalog-vite/
+
+## Project Structure
+
 ```
-# Trigger rebuild
+src/
+  components/ui/      # shadcn/ui components
+  data/products.ts    # Product data
+  App.tsx             # Main application
+  index.css           # Tailwind styles
+```
+
+## Available Scripts
+
+| Command | Description |
+|---------|-------------|
+| `bun run dev` | Start dev server |
+| `bun run build` | Type check and build |
+| `bun run lint` | Run ESLint |
+| `bun run preview` | Preview production build |
+
+## Customization
+
+Products are defined in `src/data/products.ts`. Each product includes:
+- Name, description, price
+- Category, rating, reviews
+- Image URL (supports external images)
+- Optional badge ("Best Seller", "Top Rated")
+
+## License
+
+MIT
