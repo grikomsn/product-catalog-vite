@@ -10,6 +10,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { useCartStore } from "@/stores/cartStore";
+import { SEO } from "@/components/seo/SEO";
 import {
   Star,
   ShoppingCart,
@@ -100,21 +101,27 @@ export function ProductDetailPage() {
 
   if (!product) {
     return (
-      <div className="flex flex-col items-center justify-center py-16 text-center">
-        <div className="rounded-full bg-muted p-4 mb-4">
-          <Package className="h-8 w-8 text-muted-foreground" />
+      <>
+        <SEO
+          title="Product Not Found"
+          description="The product you're looking for doesn't exist or has been removed. Browse our catalog for similar items."
+        />
+        <div className="flex flex-col items-center justify-center py-16 text-center">
+          <div className="rounded-full bg-muted p-4 mb-4">
+            <Package className="h-8 w-8 text-muted-foreground" />
+          </div>
+          <h1 className="text-2xl font-bold mb-2">Product Not Found</h1>
+          <p className="text-muted-foreground mb-6">
+            The product you're looking for doesn't exist or has been removed.
+          </p>
+          <Link to="/">
+            <Button className="gap-2">
+              <ArrowLeft className="h-4 w-4" />
+              Back to Products
+            </Button>
+          </Link>
         </div>
-        <h1 className="text-2xl font-bold mb-2">Product Not Found</h1>
-        <p className="text-muted-foreground mb-6">
-          The product you're looking for doesn't exist or has been removed.
-        </p>
-        <Link to="/">
-          <Button className="gap-2">
-            <ArrowLeft className="h-4 w-4" />
-            Back to Products
-          </Button>
-        </Link>
-      </div>
+      </>
     );
   }
 
@@ -127,8 +134,21 @@ export function ProductDetailPage() {
     });
   };
 
+  const productUrl = `https://grikomsn.github.io/product-catalog-vite/product/${slug}`;
+  const productKeywords = `${product.name}, ${product.category}, buy ${product.name.toLowerCase()}, ${product.category.toLowerCase()} products, shophub, online shopping`;
+
   return (
-    <div className="space-y-8">
+    <>
+      <SEO
+        title={product.name}
+        description={product.description}
+        keywords={productKeywords}
+        image={product.image}
+        url={productUrl}
+        type="product"
+        product={product}
+      />
+      <div className="space-y-8">
       {/* Breadcrumb */}
       <nav className="flex items-center gap-2 text-sm text-muted-foreground">
         <Link to="/" className="hover:text-foreground transition-colors">
@@ -282,5 +302,6 @@ export function ProductDetailPage() {
         </Link>
       </div>
     </div>
+    </>
   );
 }

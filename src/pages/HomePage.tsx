@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { ProductGrid } from "@/components/product/ProductGrid";
 import { Sidebar } from "@/components/filter/Sidebar";
 import { MobileFilterSheet } from "@/components/filter/MobileFilterSheet";
+import { SEO } from "@/components/seo/SEO";
 import { Search } from "lucide-react";
 
 export function HomePage() {
@@ -14,6 +15,19 @@ export function HomePage() {
   const searchQuery = searchParams.get("search") ?? "";
   const categoryParams = searchParams.getAll("category");
   const selectedCategories = categoryParams.length > 0 ? categoryParams : ["All"];
+
+  // Generate SEO title and description based on filters
+  const seoTitle = searchQuery 
+    ? `Search Results for "${searchQuery}" - ShopHub`
+    : selectedCategories.length === 1 && selectedCategories[0] !== "All"
+    ? `${selectedCategories[0]} Products - ShopHub`
+    : "ShopHub - Premium Product Catalog";
+
+  const seoDescription = searchQuery
+    ? `Find the best products matching "${searchQuery}" at ShopHub. Browse our curated selection with fast shipping and 30-day returns.`
+    : selectedCategories.length === 1 && selectedCategories[0] !== "All"
+    ? `Browse our premium selection of ${selectedCategories[0].toLowerCase()} products. Quality items with fast shipping and easy returns.`
+    : "Discover premium products across electronics, clothing, home & garden, sports, books, toys, and beauty. Shop the best deals with fast shipping and 30-day returns.";
 
   // Update URL when categories change
   const handleCategoryChange = useCallback(
@@ -68,8 +82,23 @@ export function HomePage() {
     });
   }, [searchQuery, selectedCategories]);
 
+  // Build canonical URL with query params
+  const buildCanonicalUrl = () => {
+    const base = "https://grikomsn.github.io/product-catalog-vite/";
+    if (searchParams.toString()) {
+      return `${base}?${searchParams.toString()}`;
+    }
+    return base;
+  };
+
   return (
-    <div className="flex gap-8">
+    <>
+      <SEO 
+        title={seoTitle}
+        description={seoDescription}
+        url={buildCanonicalUrl()}
+      />
+      <div className="flex gap-8">
       {/* Desktop Sidebar */}
       <Sidebar
         selectedCategories={selectedCategories}
@@ -122,6 +151,7 @@ export function HomePage() {
           </div>
         )}
       </div>
-    </div>
+      </div>
+    </>
   );
 }

@@ -4,17 +4,91 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Product Catalog</title>
+    
+    <!-- Primary Meta Tags -->
+    <title>ShopHub - Premium Product Catalog</title>
+    <meta name="title" content="ShopHub - Premium Product Catalog" />
+    <meta name="description" content="Discover premium products across electronics, clothing, home & garden, sports, books, toys, and beauty. Shop the best deals with fast shipping and 30-day returns." />
+    <meta name="keywords" content="shopping, ecommerce, electronics, clothing, home garden, sports, books, toys, beauty, online store, premium products, best deals, fast shipping" />
+    <meta name="author" content="ShopHub" />
+    <meta name="robots" content="index, follow" />
+    <link rel="canonical" href="https://grikomsn.github.io/product-catalog-vite/" />
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://grikomsn.github.io/product-catalog-vite/" />
+    <meta property="og:title" content="ShopHub - Premium Product Catalog" />
+    <meta property="og:description" content="Discover premium products across electronics, clothing, home & garden, sports, books, toys, and beauty. Shop the best deals with fast shipping and 30-day returns." />
+    <meta property="og:image" content="https://grikomsn.github.io/product-catalog-vite/opengraph.jpg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:site_name" content="ShopHub" />
+    <meta property="og:locale" content="en_US" />
+    
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:url" content="https://grikomsn.github.io/product-catalog-vite/" />
+    <meta property="twitter:title" content="ShopHub - Premium Product Catalog" />
+    <meta property="twitter:description" content="Discover premium products across electronics, clothing, home & garden, sports, books, toys, and beauty. Shop the best deals with fast shipping and 30-day returns." />
+    <meta property="twitter:image" content="https://grikomsn.github.io/product-catalog-vite/opengraph.jpg" />
+    
+    <!-- Theme Color -->
+    <meta name="theme-color" content="#0d9488" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#0f766e" media="(prefers-color-scheme: dark)" />
+    
     <script>
       // Prevent theme flash on initial load
       (function() {
         const storageKey = "vite-ui-theme";
         const theme = localStorage.getItem(storageKey) || "system";
         const resolved = theme === "system" 
-          ? (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light")
+          ? (window.matchMedia("(prefers-color-scheme: dark)".matches ? "dark" : "light")
           : theme;
         document.documentElement.classList.add(resolved);
       })();
+    </script>
+    
+    <!-- JSON-LD Structured Data: Organization -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Organization",
+        "name": "ShopHub",
+        "url": "https://grikomsn.github.io/product-catalog-vite/",
+        "logo": "https://grikomsn.github.io/product-catalog-vite/favicon.svg",
+        "description": "Premium product catalog featuring electronics, clothing, home & garden, sports equipment, books, toys, and beauty products.",
+        "sameAs": []
+      }
+    </script>
+    
+    <!-- JSON-LD Structured Data: WebSite -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "ShopHub",
+        "url": "https://grikomsn.github.io/product-catalog-vite/",
+        "potentialAction": {
+          "@type": "SearchAction",
+          "target": "https://grikomsn.github.io/product-catalog-vite/?search={search_term_string}",
+          "query-input": "required name=search_term_string"
+        }
+      }
+    </script>
+    
+    <!-- JSON-LD Structured Data: Store -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Store",
+        "name": "ShopHub",
+        "url": "https://grikomsn.github.io/product-catalog-vite/",
+        "image": "https://grikomsn.github.io/product-catalog-vite/opengraph.jpg",
+        "description": "Online store offering premium products across multiple categories with fast shipping and easy returns.",
+        "currenciesAccepted": "USD",
+        "paymentAccepted": "Credit Card, Debit Card, PayPal",
+        "priceRange": "$"
+      }
     </script>
   </head>
   <body>
